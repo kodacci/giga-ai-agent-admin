@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: giga-ai-agent-admin
+  namespace: {{ namespace }}
+  labels:
+    app.kubernetes.io/name: giga-ai-agent-admin
+    app.kubernetes.io/part-of: giga-ai-agent
+    app.kubernetes.io/component: web-static
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: giga-ai-agent-admin
+      app.kubernetes.io/name: giga-ai-agent-admin
+      app.kubernetes.io/component: web-static
+      app.kubernetes.io/part-of: giga-ai-agent
+      app.network.policy: restricted
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: giga-ai-agent-admin
+        app.kubernetes.io/name: giga-ai-agent-admin
+        app.kubernetes.io/component: web-static
+        app.kubernetes.io/part-of: giga-ai-agent
+        app.network.policy: restricted
+        sidecar.istio.io/proxyCPU: {{ web_static.istio.requests.cpu }}
+        sidecar.istio.io/proxyCPULimit: {{ web_static.istio.limits.cpu }}
+        sidecar.istio.io/proxyMemory: {{ web_static.istio.requests.memory }}
+        sidecar.istio.io/proxyMemoryLimit: {{ web_static.istio.limits.memory }}
+    spec:
+      containers:
+        - name: giga-ai-agent-admin
+          image: {{ registry }}/{{ image_tag }}
+          ports:
+            - containerPort: 8080
+              name: web-static
+            - containerPort: 8081
+              name: health
+          readinessProbe:
+            httpGet:
+              port: 8081
+              path: /health
+            initialDelaySeconds: 10
+            periodSeconds: 3
+            failureThreshold: 10
+          livenessProbe:
+            httpGet:
+              port: 8081
+              path: /health
+            initialDelaySeconds: 15
+            periodSeconds: 5
+            failureThreshold: 5
+          resources:
+            requests:
+              cpu: {{ web_static.requests.cpu }}
+              memory: {{ web_static.requests.memory }}
+            limits:
+              cpu: {{ web_static.limits.cpu }}
+              memory: {{ web_static.limits.memory }}
+      imagePullSecrets:
+        - name: docker-registry-creds

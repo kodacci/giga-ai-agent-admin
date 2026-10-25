@@ -1,0 +1,37 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: {{ name }}-rule
+  namespace: {{ namespace }}
+  labels:
+    app.kubernetes.io/name: giga-ai-agent-admin-{{ name }}-virtual-service
+    app.kubernetes.io/part-of: giga-ai-agent
+    app.kubernetes.io/component: web-static
+spec:
+  exportTo:
+    - "."
+  hosts:
+    - {{ host }}
+  gateways:
+    - mesh
+    - "{{ namespace }}/giga-ai-agent-admin-egress-gateway"
+  http:
+      - match:
+        - gateways:
+            - mesh
+          port: 80
+        route:
+          - destination:
+              host: giga-ai-agent-admin-egressgw.{{ namespace }}.svc.cluster.local
+              subset: {{ name }}
+              port:
+                number: 80
+      - match:
+          - gateways:
+              - {{ namespace }}/giga-ai-agent-admin-egress-gateway
+            port: 80
+        route:
+          - destination:
+              host: {{ host }}
+              port:
+                number: {{ ext_https_port }}

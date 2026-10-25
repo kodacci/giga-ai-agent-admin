@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: giga-ai-agent-admin-service
+  namespace: {{ namespace }}
+  labels:
+    app.kubernetes.io/name: giga-ai-agent-admin-service
+    app.kubernetes.io/part-of: giga-ai-agent
+    app.kubernetes.io/component: web-static
+spec:
+  selector:
+    app: giga-ai-agent-admin
+  ports:
+    - name: web-static
+      protocol: TCP
+      port: 8080
+      targetPort: web-static
+    - name: health
+      protocol: TCP
+      port: 8081
+      targetPort: health
