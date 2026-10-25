@@ -86,6 +86,16 @@ pipeline {
             }
         }
 
+        stage('Type check') {
+            steps {
+                script {
+                    nodejs(nodeJSInstallationName: 'NodeJS v24') {
+                        sh 'npm run typecheck'
+                    }
+                }
+            }
+        }
+
         stage('Test') {
             steps {
                 script {
@@ -130,7 +140,7 @@ pipeline {
             steps {
                 script {
                     PACKAGE_NAME = "$PROJECT_VERSION-${currentBuild.number}"
-                    sh "zip -r ${PACKAGE_NAME}.zip dist"
+                    sh "cd build && zip -r ../${PACKAGE_NAME}.zip dist"
 
                     withCredentials([usernamePassword(
                             credentialsId: 'vault-nexus-deployer',

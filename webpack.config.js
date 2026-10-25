@@ -14,17 +14,8 @@ export default {
         rules: [
             {
                 test: /.tsx?$/,
-                use: {
-                    loader: 'babel-loader',
-                    options: {
-                        presets: [
-                            '@babel/preset-env',
-                            '@babel/preset-typescript',
-                            '@babel/preset-react',
-                        ]
-                    }
-                },
-                exclude: /node-modules/,
+                use: 'babel-loader',
+                exclude: /node_modules/,
             },
             {
                 test: /\.css$/i,
@@ -52,7 +43,7 @@ export default {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            title: 'Garden Manager',
+            title: 'Giga AI Agent Admin',
             template: 'assets/index.ejs',
         }),
         new MiniCssExtractPlugin(),

@@ -7,7 +7,5 @@ const rootDiv = document.getElementById('root')
 if (rootDiv) {
   const root = createRoot(rootDiv)
 
-  root.render(
-    <App />
-  )
+  root.render(<App />)
 }

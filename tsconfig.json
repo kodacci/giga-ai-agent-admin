@@ -2,12 +2,11 @@
   // Visit https://aka.ms/tsconfig to read more about this file
   "compilerOptions": {
     // File Layout
-    "rootDir": "./src",
     "outDir": "./build/dist",
 
     // Environment Settings
     // See also https://aka.ms/tsconfig/module
-    "module": "nodenext",
+    "module": "esnext",
     "target": "esnext",
     "types": [],
 
@@ -38,26 +37,25 @@
 
     // Recommended Options
     "strict": true,
-    "jsx": "react",
+    "jsx": "react-jsx",
     "verbatimModuleSyntax": true,
     "isolatedModules": true,
     "noUncheckedSideEffectImports": true,
     "moduleDetection": "force",
     "skipLibCheck": true,
-    "moduleResolution": "nodenext"
+    "moduleResolution": "bundler",
+    "paths": {
+      "@app/*": ["./src/app/*"],
+      "@api/*": ["./src/api/*"],
+      "@context/*": ["./src/context/*"],
+      "@hooks/*": ["./src/hooks/*"],
+      "@services/*": ["./src/services/*"],
+      "@components/*": ["./src/components/*"],
+      "@stores/*": ["./src/stores/*"],
+      "@test/*": ["./test/*"]
+    }
   },
 
   "exclude": ["node_modules", "build", "webpack", "jest"],
-  "include": ["src/**/*", "test/**/*"],
-
-  "paths": {
-    "@app/*": ["./src/app/*"],
-    "@api/*": ["./src/api/*"],
-    "@context/*": ["./src/context/*"],
-    "@hooks/*": ["./src/hooks/*"],
-    "@services/*": ["./src/services/*"],
-    "@components/*": ["./src/components/*"],
-    "@stores/*": ["./src/stores/*"],
-    "@test/*": ["./test/*"],
-  }
+  "include": ["src/**/*", "test/**/*"]
 }
