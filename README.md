@@ -56,7 +56,11 @@ Pushes to main branch are forbidden, only pull requests allowed. For PRs using s
 Implementing features with openspec and AI agents
 
 
-## Test environment
+## Test stand
 
-Application is automatically deployed to test environment by jenkins job and is available at https://admin.giga-ai-agent.test.cloud.ra-tech.pro
+Application is automatically deployed to test stand by jenkins job and then it is available at https://admin.giga-ai-agent.test.cloud.ra-tech.pro
+
+## Changes agreements
+
+Before branch is ready for PR, it shold be locally tested, then CI/CD pipelines must finish successfully, github checks run successfully and then feature/bugfix should work on test stand. After this PR can be maid.
 
