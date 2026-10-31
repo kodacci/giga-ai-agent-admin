@@ -70,7 +70,7 @@ export default (_env, argv) => {
                     context: ['/api'],
                     target: 'https://api.giga-ai-agent.test.cloud.ra-tech.pro',
                     headers: {
-                        host: 'giga-ai-agent.test.cloud.ra-tech.pro',
+                        host: 'api.giga-ai-agent.test.cloud.ra-tech.pro',
                     },
                     secure: false,
                 },
