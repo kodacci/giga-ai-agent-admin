@@ -181,7 +181,7 @@ pipeline {
                 script {
                     def path = BRANCH_NAME.replaceAll('/', '%2F')
                     build(
-                            job: "Giga AI Agent Admin Deploy/$path",
+                            job: "Giga AI Agent Admin CD/$path",
                             wait: false,
                             parameters: [
                                     string(name: 'web_server_image', value: WEB_SERVER_IMAGE_TAG)
