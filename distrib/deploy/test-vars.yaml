@@ -1,4 +1,4 @@
-host: giga-ai-agent.test.cloud.ra-tech.pro
+host: admin.giga-ai-agent.test.cloud.ra-tech.pro
 api_host: api.giga-ai-agent.test.cloud.ra-tech.pro
 namespace: giga-ai-agent-admin-test
 registry: snapshots.docker-registry.ra-tech.pro

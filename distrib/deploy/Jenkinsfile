@@ -75,13 +75,13 @@ pipeline {
                 script {
                     if (BRANCH_NAME.startsWith('release/')) {
                         DEPLOY_NAMESPACE = 'giga-ai-agent-admin'
-                        WEB_SERVER_HOST = 'giga-ai-agent.cloud.ra-tech.pro'
+                        WEB_SERVER_HOST = 'admin.giga-ai-agent.cloud.ra-tech.pro'
                         API_HOST = 'api.giga-ai-agent.cloud.ra-tech.pro'
                         REGISTRY_HOST = removeProtocol(DOCKER_REGISTRY_HOST)
                         JINJA2_VARS_FILE_PATH = 'distrib/deploy/vars.yaml'
                     } else {
                         DEPLOY_NAMESPACE = 'giga-ai-agent-admin-test'
-                        WEB_SERVER_HOST = 'giga-ai-agent.test.cloud.ra-tech.pro'
+                        WEB_SERVER_HOST = 'admin.giga-ai-agent.test.cloud.ra-tech.pro'
                         API_HOST = 'api.giga-ai-agent.test.cloud.ra-tech.pro'
                         REGISTRY_HOST = removeProtocol(SNAPSHOTS_DOCKER_REGISTRY_HOST)
                         JINJA2_VARS_FILE_PATH = 'distrib/deploy/test-vars.yaml'
