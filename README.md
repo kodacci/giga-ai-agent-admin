@@ -50,3 +50,13 @@ Using trunk based development: [Trunk](https://trunkbaseddevelopment.com/)
 Every branch except main must have issue number in name. For example: `feature/24-add-about-page`
 
 Pushes to main branch are forbidden, only pull requests allowed. For PRs using squash and fast-forward only
+
+## Features flow
+
+Implementing features with openspec and AI agents
+
+
+## Test environment
+
+Application is automatically deployed to test environment by jenkins job and is available at https://admin.giga-ai-agent.test.cloud.ra-tech.pro
+

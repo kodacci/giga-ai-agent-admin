@@ -7,9 +7,11 @@ export const HomePage: FC = (): ReactNode => {
     <AppLayout>
       <Header className="flex items-center"></Header>
       <Content className="flex justify-center p-8">
-          <h1 className="text-3xl">Giga AI Agent Admin</h1>
+        <h1 className="text-3xl">Giga AI Agent Admin</h1>
       </Content>
-      <Footer className="flex items-center flex-col justify-center text-sm">RA-ITech LLC</Footer>
+      <Footer className="flex items-center flex-col justify-center text-sm">
+        RA-ITech LLC
+      </Footer>
     </AppLayout>
   )
 }
