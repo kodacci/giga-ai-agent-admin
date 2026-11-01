@@ -1,16 +1,19 @@
 import type { HttpClientError } from '@api/HttpClient'
 import { useCallback } from 'react'
-import { notification } from 'antd'
+import { useNotification } from '@hooks/useNotification'
 
 export const useOnApiError = (): ((error: HttpClientError) => void) => {
-  const [api] = notification.useNotification()
+  const notification = useNotification()
 
-  return useCallback((error: HttpClientError) => {
-    api.error({
-      title: 'Server Error',
-      description: error.message,
-      placement: 'bottomRight',
-      duration: 60,
-    })
-  }, [api.error])
+  return useCallback(
+    (error: HttpClientError) => {
+      notification.error({
+        title: 'Server Error',
+        description: error.message,
+        placement: 'bottomRight',
+        duration: 60,
+      })
+    },
+    [notification]
+  )
 }

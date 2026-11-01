@@ -10,7 +10,7 @@ import { useEffect } from 'react'
 export type UseApiQueryOptions<T> = UseQueryOptions<T, HttpClientError>
 export type UseApiQueryResult<T> = UseQueryResult<T, HttpClientError>
 
-export const useApiQuery = <T,>(
+export const useApiQuery = <T>(
   options: UseApiQueryOptions<T>
 ): UseApiQueryResult<T> => {
   const onError = useOnApiError()

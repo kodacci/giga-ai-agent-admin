@@ -13,6 +13,7 @@ export interface GetAiModelsResponse {
 export const modelsApi = (httpClient: HttpClient): ModelsApi => ({
   listModels: {
     queryKey: ['models'],
-    queryFn: (): Promise<GetAiModelsResponse> => httpClient.get<GetAiModelsResponse>(MODELS_API_PATH),
-  }
+    queryFn: (): Promise<GetAiModelsResponse> =>
+      httpClient.get<GetAiModelsResponse>(MODELS_API_PATH),
+  },
 })

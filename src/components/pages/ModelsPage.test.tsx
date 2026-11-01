@@ -2,6 +2,7 @@ import { describe, expect, it, jest, afterEach } from '@jest/globals'
 import { render, screen, within } from '@testing-library/react'
 import type { RenderResult } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { App as AntdApp } from 'antd'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ModelsPage } from './ModelsPage'
 
@@ -21,9 +22,11 @@ const renderPage = (): RenderResult => {
     defaultOptions: { queries: { retry: false } },
   })
   return render(
-    <QueryClientProvider client={queryClient}>
-      <ModelsPage />
-    </QueryClientProvider>
+    <AntdApp>
+      <QueryClientProvider client={queryClient}>
+        <ModelsPage />
+      </QueryClientProvider>
+    </AntdApp>
   )
 }
 
