@@ -1,6 +1,7 @@
 import type { FC, ReactNode } from 'react'
 import { Alert, Button, List, Skeleton, Typography } from 'antd'
-import { useAiModels } from '@hooks/useAiModels'
+import { useApi } from '@hooks/useApi'
+import { useApiQuery } from '@hooks/useApiQuery'
 
 const isEmbeddingModel = (name: string): boolean =>
   name.toLowerCase().includes('embedding')
@@ -24,7 +25,7 @@ const ModelGroup: FC<{ title: string; models: string[] }> = ({
 }
 
 export const ModelsPage: FC = (): ReactNode => {
-  const { data, isLoading, isError, refetch } = useAiModels()
+  const { data, isLoading, isError, refetch } = useApiQuery(useApi().listModels)
 
   if (isLoading) {
     return (
@@ -46,7 +47,7 @@ export const ModelsPage: FC = (): ReactNode => {
     )
   }
 
-  if (!data || data.length === 0) {
+  if (!data?.models || data?.models.length === 0) {
     return <Typography.Text>No models are available.</Typography.Text>
   }
 
@@ -54,11 +55,11 @@ export const ModelsPage: FC = (): ReactNode => {
     <div className="max-w-xl">
       <ModelGroup
         title="Chat models"
-        models={data.filter((name) => !isEmbeddingModel(name))}
+        models={data?.models.filter((name) => !isEmbeddingModel(name))}
       />
       <ModelGroup
         title="Embedding models"
-        models={data.filter(isEmbeddingModel)}
+        models={data?.models.filter(isEmbeddingModel)}
       />
     </div>
   )

@@ -1,19 +1,17 @@
 import type { FC, ReactNode } from 'react'
 import { BrowserRouter } from 'react-router'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { AppRouter } from './AppRouter'
 import { ConfigProvider, theme } from 'antd'
-
-const queryClient = new QueryClient()
+import { AppContext } from '@app/AppContext'
 
 export const App: FC = (): ReactNode => {
   return (
-    <ConfigProvider theme={{ algorithm: theme.darkAlgorithm }}>
-      <QueryClientProvider client={queryClient}>
+    <AppContext>
+      <ConfigProvider theme={{ algorithm: theme.darkAlgorithm }}>
         <BrowserRouter>
           <AppRouter />
         </BrowserRouter>
-      </QueryClientProvider>
-    </ConfigProvider>
+      </ConfigProvider>
+    </AppContext>
   )
 }
