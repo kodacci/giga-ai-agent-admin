@@ -15,3 +15,13 @@ Object.defineProperty(window, 'matchMedia', {
     dispatchEvent: jest.fn(),
   })),
 })
+
+// jsdom has no ResizeObserver; Ant Design horizontal Menu observes its width
+Object.defineProperty(window, 'ResizeObserver', {
+  writable: true,
+  value: class {
+    observe(): void {}
+    unobserve(): void {}
+    disconnect(): void {}
+  },
+})
