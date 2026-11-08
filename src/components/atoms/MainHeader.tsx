@@ -3,11 +3,9 @@ import { Menu } from 'antd'
 import type { MenuProps } from 'antd'
 import { Header } from 'antd/es/layout/layout'
 import { useLocation, useNavigate } from 'react-router'
+import { BrandIcon } from './BrandIcon'
 
-const items: MenuProps['items'] = [
-  { key: '/', label: 'Home' },
-  { key: '/models', label: 'AI Models' },
-]
+const items: MenuProps['items'] = [{ key: '/', label: 'Models' }]
 
 export const MainHeader: FC = (): ReactNode => {
   const location = useLocation()
@@ -19,6 +17,7 @@ export const MainHeader: FC = (): ReactNode => {
 
   return (
     <Header className="flex items-center px-4">
+      <BrandIcon size={32} className="mr-4 shrink-0" />
       <Menu
         mode="horizontal"
         items={items}

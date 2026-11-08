@@ -11,7 +11,6 @@ const renderAt = (path: string): HTMLElement => {
       <MainHeader />
       <Routes>
         <Route index element={<div>home content</div>} />
-        <Route path="/models" element={<div>models content</div>} />
       </Routes>
     </MemoryRouter>
   )
@@ -20,36 +19,27 @@ const renderAt = (path: string): HTMLElement => {
 }
 
 describe('MainHeader', () => {
-  it('renders navigation entries for every section', () => {
+  it('renders the Models navigation entry', () => {
     renderAt('/')
 
-    expect(screen.getByRole('menuitem', { name: 'Home' })).toBeInTheDocument()
-    expect(
-      screen.getByRole('menuitem', { name: 'AI Models' })
-    ).toBeInTheDocument()
+    expect(screen.getByRole('menuitem', { name: 'Models' })).toBeInTheDocument()
   })
 
-  it('marks Home active on the index route', () => {
+  it('marks Models active on the index route', () => {
     const container = renderAt('/')
 
     expect(
       container.querySelector('.ant-menu-item-selected')
-    ).toHaveTextContent('Home')
-  })
-
-  it('marks AI Models active on the models route', () => {
-    const container = renderAt('/models')
-
-    expect(
-      container.querySelector('.ant-menu-item-selected')
-    ).toHaveTextContent('AI Models')
+    ).toHaveTextContent('Models')
   })
 
   it('navigates to the models section on click', async () => {
-    renderAt('/')
+    renderAt('/elsewhere')
 
-    await userEvent.click(screen.getByRole('menuitem', { name: 'AI Models' }))
+    expect(screen.queryByText('home content')).not.toBeInTheDocument()
 
-    expect(screen.getByText('models content')).toBeInTheDocument()
+    await userEvent.click(screen.getByRole('menuitem', { name: 'Models' }))
+
+    expect(screen.getByText('home content')).toBeInTheDocument()
   })
 })
