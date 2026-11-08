@@ -55,6 +55,7 @@ export default (_env, argv) => {
             new HtmlWebpackPlugin({
                 title: 'Giga AI Agent Admin',
                 template: 'assets/index.ejs',
+                favicon: resolve(DIRNAME, 'assets/favicon.svg'),
             }),
             new MiniCssExtractPlugin(),
         ],
