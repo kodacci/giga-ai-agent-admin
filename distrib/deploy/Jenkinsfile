@@ -175,10 +175,11 @@ pipeline {
                                 usernameVariable: 'USER',
                                 passwordVariable: 'PASS'
                         )]) {
+                            sh "helm repo add ra-itech --url $NEXUS_HOST/repository/helm --force-update --username \$USER --password \$PASS"
                             sh 'helm repo update ra-itech'
                             sh 'helm search repo ra-itech'
 
-                            sh "helm upgrade --username \$USER --password \$PASS --install giga-ai-agent-admin+$PROJECT_VERSION+${currentBuild.number} ra-itech/giga-ai-agent-admin -n $namespace --set imageTag=$imageTag --wait --timeout=5m"
+                            sh "helm upgrade --username \$USER --password \$PASS --install giga-ai-agent-admin+$PROJECT_VERSION ra-itech/giga-ai-agent-admin -n $namespace --set imageTag=$imageTag --wait --timeout=5m"
                         }
 
 

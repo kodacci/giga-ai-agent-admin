@@ -138,9 +138,9 @@ pipeline {
                             usernameVariable: 'USER',
                             passwordVariable: 'PASS'
                     )]) {
-                        sh "helm package --app-version $PROJECT_VERSION+${currentBuild.number} --version $PROJECT_VERSION+${currentBuild.number} --username \$USER --password \$PASS distrib/deploy/helm/giga-ai-agent-admin"
+                        sh "helm package --app-version $PROJECT_VERSION --version $PROJECT_VERSION --username \$USER --password \$PASS distrib/deploy/helm/giga-ai-agent-admin"
 
-                        sh "curl -v --user \$USER:\$PASS --upload-file ./giga-ai-agent-admin-$PROJECT_VERSION+${currentBuild.number}.tgz -X PUT $NEXUS_HOST/repository/helm/"
+                        sh "curl -v --user \$USER:\$PASS --upload-file ./giga-ai-agent-admin-$PROJECT_VERSION.tgz -X PUT $NEXUS_HOST/repository/helm/"
                     }
                 }
             }
