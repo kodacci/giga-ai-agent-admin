@@ -54,6 +54,7 @@ pipeline {
     agent { label 'jenkins-agent1' }
 
     parameters {
+        string(name: 'version', description: 'Application and helm chart version')
         string(name: 'web_server_image', description: 'Web server with static image tag')
     }
 
@@ -63,20 +64,6 @@ pipeline {
                 script {
                     ESCAPED_JOB_NAME = escapeMd(JOB_NAME, MARKDOWN_ESCAPE_CHARS)
                     raTechNotify(message: "🚀 Job *${ESCAPED_JOB_NAME}* started [BUILD](${BUILD_URL}) 🚀", markdown: true)
-
-                    nodejs(nodeJSInstallationName: 'NodeJS v24') {
-                        PROJECT_VERSION =
-                                sh(
-                                        encoding: 'UTF-8',
-                                        returnStdout: true,
-                                        script: 'node -e "const pkg = require(\'./package.json\'); console.log(pkg.version)"'
-                                ).trim()
-                        if (!BRANCH_NAME.startsWith('release/')) {
-                            PROJECT_VERSION = PROJECT_VERSION + '-SNAPSHOT'
-                        }
-                    }
-
-                    println "Project version: '$PROJECT_VERSION'"
 
                     DEPLOY_GIT_SCOPE = BRANCH_NAME.tokenize('/').last().toLowerCase()
                     echo "Git branch scope: '${DEPLOY_GIT_SCOPE}'"
@@ -193,7 +180,7 @@ pipeline {
                             sh 'helm repo update ra-itech'
                             sh 'helm search repo ra-itech'
 
-                            sh "helm upgrade --username \$USER --password \$PASS --install giga-ai-agent-admin-$PROJECT_VERSION ra-itech/giga-ai-agent-admin -n $namespace --set imageTag=$imageTag --wait --timeout=5m"
+                            sh "helm upgrade --username \$USER --password \$PASS --install --version ${params.version} -n $namespace --set imageTag=$imageTag --wait --timeout=5m giga-ai-agent-admin ra-itech/giga-ai-agent-admin"
                         }
 
 

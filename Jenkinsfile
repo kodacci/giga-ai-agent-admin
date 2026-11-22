@@ -200,7 +200,8 @@ pipeline {
                             job: "Giga AI Agent Admin CD/$path",
                             wait: false,
                             parameters: [
-                                    string(name: 'web_server_image', value: WEB_SERVER_IMAGE_TAG)
+                                    string(name: 'web_server_image', value: WEB_SERVER_IMAGE_TAG),
+                                    string(name: 'version', value: PROJECT_VERSION)
                             ]
                     )
                 }
