@@ -175,7 +175,7 @@ pipeline {
                                 usernameVariable: 'USER',
                                 passwordVariable: 'PASS'
                         )]) {
-                            sh "helm repo add ra-itech --url $NEXUS_HOST/repository/helm --force-update --username \$USER --password \$PASS"
+                            sh "helm repo add ra-itech $NEXUS_HOST/repository/helm --force-update --username \$USER --password \$PASS"
                             sh 'helm repo update ra-itech'
                             sh 'helm search repo ra-itech'
 
