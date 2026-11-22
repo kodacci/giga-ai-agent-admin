@@ -1,7 +1,11 @@
+app: giga-ai-agent-admin
 host: admin.giga-ai-agent.test.cloud.ra-tech.pro
-api_host: api.giga-ai-agent.test.cloud.ra-tech.pro
+apiHost: api.giga-ai-agent.test.cloud.ra-tech.pro
 namespace: giga-ai-agent-admin-test
 registry: snapshots.docker-registry.ra-tech.pro
+vault:
+  tls_url: https://vault.ra-tech.pro
+  host: vault.ra-tech.pro
 
 egress:
   requests:
@@ -18,21 +22,8 @@ egress:
       cpu: 200m
       memory: 64Mi
 
-web_static:
-  requests:
-    cpu: 25m
-    memory: 128Mi
-  limits:
-    cpu: 200m
-    memory: 256Mi
-  istio:
-    requests:
-      cpu: 50m
-      memory: 64Mi
-    limits:
-      cpu: 100m
-      memory: 128Mi
-
-vault:
-  tls_url: https://vault.ra-tech.pro
-  host: vault.ra-tech.pro
+extHttpsServices:
+  - name: api
+    host: api.giga-ai-agent.test.cloud.ra-tech.pro
+    port: 443
+    mtls: true

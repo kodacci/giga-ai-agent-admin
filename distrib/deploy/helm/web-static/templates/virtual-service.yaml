@@ -1,10 +1,10 @@
 apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
-  name: giga-ai-agent-admin-rule
-  namespace: {{ namespace }}
+  name: {{ .Values.global.app }}-rule
+  namespace: {{ .Values.global.namespace }}
   labels:
-    app.kubernetes.io/name: giga-ai-agent-admin-rule
+    app.kubernetes.io/name: {{ .Values.global.app }}-rule
     app.kubernetes.io/part-of: giga-ai-agent
     app.kubernetes.io/component: web-static
 spec:
@@ -12,9 +12,9 @@ spec:
     - "."
     - istio-system
   hosts:
-    - {{ host }}
+    - {{ .Values.global.host }}
   gateways:
-    - "{{ namespace }}/giga-ai-agent-admin-ingress-gateway"
+    - "{{ .Values.global.namespace }}/{{ .Values.global.app }}-ingress-gateway"
     - mesh
   http:
     - name: web-server-route
@@ -23,6 +23,6 @@ spec:
             prefix: "/"
       route:
         - destination:
-            host: giga-ai-agent-admin-service.{{ namespace }}.svc.cluster.local
+            host: {{ .Values.global.app }}-service.{{ .Values.global.namespace }}.svc.cluster.local
             port:
               number: 8080
