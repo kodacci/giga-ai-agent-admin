@@ -64,6 +64,20 @@ pipeline {
                     ESCAPED_JOB_NAME = escapeMd(JOB_NAME, MARKDOWN_ESCAPE_CHARS)
                     raTechNotify(message: "🚀 Job *${ESCAPED_JOB_NAME}* started [BUILD](${BUILD_URL}) 🚀", markdown: true)
 
+                    nodejs(nodeJSInstallationName: 'NodeJS v24') {
+                        PROJECT_VERSION =
+                                sh(
+                                        encoding: 'UTF-8',
+                                        returnStdout: true,
+                                        script: 'node -e "const pkg = require(\'./package.json\'); console.log(pkg.version)"'
+                                ).trim()
+                        if (!BRANCH_NAME.startsWith('release/')) {
+                            PROJECT_VERSION = PROJECT_VERSION + '-SNAPSHOT'
+                        }
+                    }
+
+                    println "Project version: '$PROJECT_VERSION'"
+
                     DEPLOY_GIT_SCOPE = BRANCH_NAME.tokenize('/').last().toLowerCase()
                     echo "Git branch scope: '${DEPLOY_GIT_SCOPE}'"
                 }
