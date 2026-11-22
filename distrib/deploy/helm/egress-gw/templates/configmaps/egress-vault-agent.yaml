@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: egress-vault-agent
-  namespace: {{ namespace }}
+  namespace: {{ .Values.namespace }}
   labels:
     app.kubernetes.io/name: egress-vault-agent-config
     app.kubernetes.io/part-of: giga-ai-agent
@@ -11,7 +11,7 @@ data:
   vault-agent-config.hcl: |
     exit_after_auth = false
     vault {
-      address = "{{ vault.tls_url }}"
+      address = "{{ .Values.vault.tls_url }}"
       ca_cert = "/tls/ca.pem"
       tls_skip_verify = false 
     }
@@ -50,7 +50,7 @@ data:
       destination = "/vault/secrets/certs/client.pem"
       error_on_missing_key = true
       contents = <<EOT
-    [[- with secret "ra-tech-kv/data/{{ namespace }}/cert" ]]
+    [[- with secret "ra-tech-kv/data/{{ .Values.namespace }}/cert" ]]
     [[ .Data.data.cert ]]
     [[- end ]]
     EOT
@@ -62,7 +62,7 @@ data:
       destination = "/vault/secrets/certs/key.pem"
       error_on_missing_key = true
       contents = <<EOT
-    [[- with secret "ra-tech-kv/data/{{ namespace }}/cert" ]]
+    [[- with secret "ra-tech-kv/data/{{ .Values.namespace }}/cert" ]]
     [[ .Data.data.key ]]
     [[- end ]]
     EOT
@@ -74,7 +74,7 @@ data:
       destination = "/vault/secrets/certs/ca.pem"
       error_on_missing_key = true
       contents = <<EOT
-    [[- with secret "ra-tech-kv/data/{{ namespace }}/cert" ]]
+    [[- with secret "ra-tech-kv/data/{{ .Values.namespace }}/cert" ]]
     [[ .Data.data.ca ]]
     [[- end ]]
     EOT

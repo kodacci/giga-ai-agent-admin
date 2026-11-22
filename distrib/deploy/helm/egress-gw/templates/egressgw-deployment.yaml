@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: giga-ai-agent-admin-egressgw
-  namespace: {{ namespace }}
+  name: {{ .Values.app }}-egressgw
+  namespace: {{ .Values.namespace }}
   labels:
-    app.kubernetes.io/name: giga-ai-agent-admin-egressgw
+    app.kubernetes.io/name: {{ .Values.app }}-egressgw
     app.kubernetes.io/component: istio-egressgw
     app.kubernetes.io/part-of: giga-ai-agent
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: giga-ai-agent-admin-egressgw
-      app.kubernetes.io/name: giga-ai-agent-admin-egressgw
+      app: {{ .Values.app }}-egressgw
+      app.kubernetes.io/name: {{ .Values.app }}-egressgw
       app.kubernetes.io/component: istio-egressgw
       app.kubernetes.io/part-of: giga-ai-agent
-      istio: {{ namespace }}-egressgateway
+      istio: {{ .Values.namespace }}-egressgateway
       sidecar.istio.io/inject: "false"
       istio.io/rev: 1-18-2
       app.network.policy: egress
@@ -27,11 +27,11 @@ spec:
         sidecar.istio.io/inject: "false"
         istio.io/rev: 1-18-2
       labels:
-        app: giga-ai-agent-admin-egressgw
-        app.kubernetes.io/name: giga-ai-agent-admin-egressgw
+        app: {{ .Values.app }}-egressgw
+        app.kubernetes.io/name: {{ .Values.app }}-egressgw
         app.kubernetes.io/component: istio-egressgw
         app.kubernetes.io/part-of: giga-ai-agent
-        istio: {{ namespace }}-egressgateway
+        istio: {{ .Values.namespace }}-egressgateway
         sidecar.istio.io/inject: "false"
         istio.io/rev: 1-18-2
         app.network.policy: egress
@@ -40,7 +40,7 @@ spec:
         nodeAffinity:
           preferredDuringSchedulingIgnoredDuringExecution: null
           requiredDuringSchedulingIgnoredDuringExecution: null
-      serviceAccountName: giga-ai-agent-admin-egressgw-service-account
+      serviceAccountName: {{ .Values.app }}-egressgw-service-account
       volumes:
         - emptyDir: {}
           name: workload-socket
@@ -113,11 +113,11 @@ spec:
           image: docker.io/istio/proxyv2:1.18.2
           resources:
             limits:
-              cpu: {{ egress.limits.cpu }}
-              memory: {{ egress.limits.memory }}
+              cpu: {{ .Values.egress.limits.cpu }}
+              memory: {{ .Values.egress.limits.memory }}
             requests:
-              cpu: {{ egress.requests.cpu }}
-              memory: {{ egress.requests.memory }}
+              cpu: {{ .Values.egress.requests.cpu }}
+              memory: {{ .Values.egress.requests.memory }}
           ports:
             - containerPort: 18080
               protocol: TCP
@@ -175,9 +175,9 @@ spec:
                 fieldRef:
                   fieldPath: spec.serviceAccountName
             - name: ISTIO_META_WORKLOAD_NAME
-              value: giga-ai-agent-admin-egressgw
+              value: {{ .Values.app }}-egressgw
             - name: ISTIO_META_OWNER
-              value: kubernetes://apis/apps/v1/namespaces/{{ namespace }}/deployments/giga-ai-agent-admin-egressgw
+              value: kubernetes://apis/apps/v1/namespaces/{{ .Values.namespace }}/deployments/{{ .Values.app }}-egressgw
             - name: ISTIO_META_MESH_ID
               value: cluster.local
             - name: TRUST_DOMAIN
@@ -251,7 +251,7 @@ spec:
                 - CAP_SETFCAP
           env:
             - name: VAULT_ADDR
-              value: {{ vault.tls_url }}
+              value: {{ .Values.vault.tls_url }}
             - name: VAULT_SKIP_VERIFY
               value: "true"
           volumeMounts:
@@ -270,8 +270,8 @@ spec:
               readOnly: true
           resources:
             requests:
-              cpu: {{ egress.vault.requests.cpu }}
-              memory: {{ egress.vault.requests.memory }}
+              cpu: {{ .Values.egress.vault.requests.cpu }}
+              memory: {{ .Values.egress.vault.requests.memory }}
             limits:
-              cpu: {{ egress.vault.limits.cpu }}
-              memory: {{ egress.vault.limits.memory }}
+              cpu: {{ .Values.egress.vault.limits.cpu }}
+              memory: {{ .Values.egress.vault.limits.memory }}

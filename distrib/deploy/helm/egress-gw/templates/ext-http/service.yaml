@@ -1,0 +1,22 @@
+{{- range $service := .Values.extHttpsServices -}}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $service.name }}
+  namespace: {{ $.Values.namespace }}
+  labels:
+    app.kubernetes.io/name: {{ $.Values.app }}-{{ $service.name }}-service
+    app.kubernetes.io/part-of: giga-ai-agent
+    app.kubernetes.io/component: web-static
+spec:
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 80
+    - name: https
+      protocol: TCP
+      port: {{ $service.port }}
+      targetPort: {{ $service.port }}
+{{- end }}

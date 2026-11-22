@@ -1,0 +1,40 @@
+{{- range $service := .Values.extHttpsServices -}}
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: {{ $service.name }}-rule
+  namespace: {{ $.Values.namespace }}
+  labels:
+    app.kubernetes.io/name: {{ $.Values.app }}-{{ $service.name }}-virtual-service
+    app.kubernetes.io/part-of: giga-ai-agent
+    app.kubernetes.io/component: web-static
+spec:
+  exportTo:
+    - "."
+  hosts:
+    - {{ $service.host }}
+  gateways:
+    - mesh
+    - "{{ $.Values.namespace }}/{{ $.Values.app }}-egress-gateway"
+  http:
+      - match:
+        - gateways:
+            - mesh
+          port: 80
+        route:
+          - destination:
+              host: {{ $.Values.app }}-egressgw.{{ $.Values.namespace }}.svc.cluster.local
+              subset: {{ $service.name }}
+              port:
+                number: 80
+      - match:
+          - gateways:
+              - {{ $.Values.namespace }}/{{ $.Values.app }}-egress-gateway
+            port: 80
+        route:
+          - destination:
+              host: {{ $service.host }}
+              port:
+                number: {{ $service.port }}
+  {{- end }}

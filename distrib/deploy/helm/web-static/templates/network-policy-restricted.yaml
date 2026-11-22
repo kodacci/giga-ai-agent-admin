@@ -2,7 +2,7 @@ apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
   name: restricted-network-policy
-  namespace: {{ namespace }}
+  namespace: {{ .Values.global.namespace }}
   labels:
     app.kubernetes.io/part-of: giga-ai-agent
     app.kubernetes.io/component: web-static
@@ -17,7 +17,7 @@ spec:
     - from:
         - namespaceSelector:
             matchLabels:
-              kubernetes.io/metadata.name: {{ namespace }}
+              kubernetes.io/metadata.name: {{ .Values.global.namespace }}
         - namespaceSelector:
             matchLabels:
               kubernetes.io/metadata.name: istio-system
@@ -25,7 +25,7 @@ spec:
     - to:
         - namespaceSelector:
             matchLabels:
-              kubernetes.io/metadata.name: {{ namespace }}
+              kubernetes.io/metadata.name: {{ .Values.global.namespace }}
         - namespaceSelector:
             matchLabels:
               kubernetes.io/metadata.name: kube-system
@@ -34,4 +34,4 @@ spec:
               kubernetes.io/metadata.name: istio-system
         - podSelector:
             matchLabels:
-              istio: {{ namespace }}-egressgateway
+              istio: {{ .Values.global.namespace }}-egressgateway

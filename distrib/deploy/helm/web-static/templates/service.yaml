@@ -1,15 +1,15 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: giga-ai-agent-admin-service
-  namespace: {{ namespace }}
+  name: {{ .Values.global.app }}-service
+  namespace: {{ .Values.global.namespace }}
   labels:
-    app.kubernetes.io/name: giga-ai-agent-admin-service
+    app.kubernetes.io/name: {{ .Values.global.app }}-service
     app.kubernetes.io/part-of: giga-ai-agent
     app.kubernetes.io/component: web-static
 spec:
   selector:
-    app: giga-ai-agent-admin
+    app: {{ .Values.global.app }}
   ports:
     - name: web-static
       protocol: TCP

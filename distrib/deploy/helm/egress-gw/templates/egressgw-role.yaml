@@ -1,13 +1,13 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  name: giga-ai-agent-admin-egressgw-sds
-  namespace: {{ namespace }}
+  name: {{ .Values.app }}-egressgw-sds
+  namespace: {{ .Values.namespace }}
   labels:
-    app: giga-ai-agent-admin-egressgw
-    app.kubernetes.io/name: giga-ai-agent-admin-egressgw
+    app: {{ .Values.app }}-egressgw
+    app.kubernetes.io/name: {{ .Values.app }}-egressgw
     app.kubernetes.io/component: istio-egressgw
-    app.kubernetes.io/part-of: giga-ai-agent-admin
+    app.kubernetes.io/part-of: giga-ai-agent
     istio.io/rev: 1-18-2
 rules:
   - apiGroups: [""]

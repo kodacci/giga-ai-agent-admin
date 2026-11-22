@@ -1,10 +1,10 @@
 apiVersion: networking.istio.io/v1beta1
 kind: Gateway
 metadata:
-  name: giga-ai-agent-admin-ingress-gateway
-  namespace: {{ namespace }}
+  name: {{ .Values.global.app }}-ingress-gateway
+  namespace: {{ .Values.global.namespace }}
   labels:
-    app.kubernetes.io/name: giga-ai-agent-admin-ingress-gateway
+    app.kubernetes.io/name: {{ .Values.global.app }}-ingress-gateway
     app.kubernetes.io/part-of: giga-ai-agent
     app.kubernetes.io/component: web-static
 spec:
@@ -16,4 +16,4 @@ spec:
         number: 80
         protocol: HTTP
       hosts:
-        - {{ host }}
+        - {{ .Values.global.host }}

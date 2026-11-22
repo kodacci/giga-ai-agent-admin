@@ -40,7 +40,8 @@ pipeline {
                                         script: 'node -e "const pkg = require(\'./package.json\'); console.log(pkg.version)"'
                                 ).trim()
                         if (!BRANCH_NAME.startsWith('release/')) {
-                            PROJECT_VERSION = PROJECT_VERSION + '-SNAPSHOT'
+                            def shortCommit = sh(returnStdout: true, script: "git rev-parse --short HEAD").trim()
+                            PROJECT_VERSION = PROJECT_VERSION + '-SNAPSHOT.' + shortCommit
                         }
                         DEPLOY_GIT_SCOPE =
                                 sh(encoding: 'UTF-8', returnStdout: true, script: 'git name-rev --name-only HEAD')
@@ -139,7 +140,7 @@ pipeline {
 
             steps {
                 script {
-                    PACKAGE_NAME = "$PROJECT_VERSION-${currentBuild.number}"
+                    PACKAGE_NAME = "$PROJECT_VERSION+${currentBuild.number}"
                     sh "cd build && zip -r ../${PACKAGE_NAME}.zip dist"
 
                     withCredentials([usernamePassword(
@@ -176,6 +177,24 @@ pipeline {
             }
         }
 
+        stage('Package and add helm chart') {
+            steps {
+                script {
+                    withCredentials([usernamePassword(
+                            credentialsId: 'vault-nexus-deployer',
+                            usernameVariable: 'USER',
+                            passwordVariable: 'PASS'
+                    )]) {
+                        sh "helm package --app-version $PROJECT_VERSION --version $PROJECT_VERSION --username \$USER --password \$PASS distrib/deploy/helm/egress-gw"
+                        sh "helm package --app-version $PROJECT_VERSION --version $PROJECT_VERSION --username \$USER --password \$PASS distrib/deploy/helm/web-static"
+
+                        sh "curl -v --user \$USER:\$PASS --upload-file ./giga-ai-agent-admin-egress-gw-${PROJECT_VERSION}.tgz -X PUT $NEXUS_HOST/repository/helm/"
+                        sh "curl -v --user \$USER:\$PASS --upload-file ./giga-ai-agent-admin-${PROJECT_VERSION}.tgz -X PUT $NEXUS_HOST/repository/helm/"
+                    }
+                }
+            }
+        }
+
         stage('Trigger deploy pipeline') {
             steps {
                 script {
@@ -184,7 +203,8 @@ pipeline {
                             job: "Giga AI Agent Admin CD/$path",
                             wait: false,
                             parameters: [
-                                    string(name: 'web_server_image', value: WEB_SERVER_IMAGE_TAG)
+                                    string(name: 'web_server_image', value: WEB_SERVER_IMAGE_TAG),
+                                    string(name: 'version', value: PROJECT_VERSION)
                             ]
                     )
                 }

@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: giga-ai-agent-admin-egressgw
-  namespace: {{ namespace }}
+  name: {{ .Values.app }}-egressgw
+  namespace: {{ .Values.namespace }}
   labels:
-    app: giga-ai-agent-admin-egressgw
-    app.kubernetes.io/name: giga-ai-agent-admin-egressgw
+    app: {{ .Values.app }}-egressgw
+    app.kubernetes.io/name: {{ .Values.app }}-egressgw
     app.kubernetes.io/component: istio-egressgw
     app.kubernetes.io/part-of: giga-ai-agent
     istio.io/rev: 1-18-2
@@ -20,6 +20,6 @@ spec:
       protocol: TCP
       targetPort: 10443
   selector:
-    app: giga-ai-agent-admin-egressgw
-    istio: {{ namespace }}-egressgateway
+    app: {{ .Values.app }}-egressgw
+    istio: {{ .Values.namespace }}-egressgateway
   type: ClusterIP
