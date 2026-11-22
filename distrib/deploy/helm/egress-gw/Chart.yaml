@@ -1,5 +1,5 @@
 apiVersion: v2
-name: giga-ai-agent-admin-egress
+name: giga-ai-agent-admin-egress-gw
 description: A Helm chart of giga-ai-agent-admin egress gateway
 
 # A chart can be either an 'application' or a 'library' chart.
