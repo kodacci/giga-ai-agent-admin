@@ -1,0 +1,16 @@
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: {{ .Values.app }}-destination
+  namespace: {{ .Values.namespace }}
+  labels:
+    app.kubernetes.io/name: {{ .Values.app }}-destination
+    app.kubernetes.io/component: web-static
+    app.kubernetes.io/part-of: giga-ai-agent
+spec:
+  host: {{ .Values.app }}-service.{{ .Values.namespace }}.svc.cluster.local
+  exportTo:
+    - "."
+  workloadSelector:
+    matchLabels:
+      app: {{ .Values.app }}

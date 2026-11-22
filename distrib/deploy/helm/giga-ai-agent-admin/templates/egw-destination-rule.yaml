@@ -1,0 +1,15 @@
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: egw-destination
+  namespace: {{ .Values.namespace }}
+  labels:
+    app.kubernetes.io/name: egw-destination
+    app.kubernetes.io/part-of: giga-ai-agent
+    app.kubernetes.io/component: web-static
+spec:
+  host: {{ .Values.app }}-egressgw.{{ .Values.namespace }}.svc.cluster.local
+  subsets:
+    - name: api
+  exportTo:
+    - "."

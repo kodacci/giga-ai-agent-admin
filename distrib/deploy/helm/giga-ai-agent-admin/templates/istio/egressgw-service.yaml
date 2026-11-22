@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.app }}-egressgw
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Values.app }}-egressgw
+    app.kubernetes.io/name: {{ .Values.app }}-egressgw
+    app.kubernetes.io/component: istio-egressgw
+    app.kubernetes.io/part-of: giga-ai-agent
+    istio.io/rev: 1-18-2
+spec:
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: 18080
+    - name: https
+      port: 443
+      protocol: TCP
+      targetPort: 10443
+  selector:
+    app: {{ .Values.app }}-egressgw
+    istio: {{ .Values.namespace }}-egressgateway
+  type: ClusterIP

@@ -1,0 +1,26 @@
+{{- range $service := .Values.extHttpsServices -}}
+---
+apiVersion: networking.istio.io/v1beta1
+kind: ServiceEntry
+metadata:
+  name: {{ $service.name }}
+  namespace: {{ $.Values.namespace }}
+  labels:
+    app.kubernetes.io/name: {{ $.Values.app }}-{{ $service.name }}-service-entry
+    app.kubernetes.io/part-of: giga-ai-agent
+    app.kubernetes.io/component: web-static
+spec:
+  exportTo:
+    - "."
+  hosts:
+    - {{ $service.host }}
+  ports:
+    - number: 80
+      name: http
+      protocol: HTTP
+    - number: {{ $service.port }}
+      name: https
+      protocol: HTTPS
+  resolution: DNS
+  location: MESH_EXTERNAL
+{{- end }}
